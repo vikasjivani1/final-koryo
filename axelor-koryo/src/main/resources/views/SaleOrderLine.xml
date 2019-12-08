@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+			  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.2.xsd">
+
+
+		<form name="sale-order-line-form" title="SO line" model="com.axelor.apps.sale.db.SaleOrderLine" extension="true" id="koryo-sale-order-line-form">
+		
+				<extend target="panel-tabs[@name='mainPanelTab']/panel[@name='informationsPanel']/panel[@name='productInfoPanel']/field[@name='typeSelect']">
+					<insert position="after">
+						<field name="statut"/>
+					</insert>
+				</extend>
+		
+				<extend target="//field[@name='statut']">
+					<insert position="after">
+						<field name="modeleDeDescriptifDeConsultation" canNew="true" onChange="action-koryo-sale-order-line-attrs-set-descriptifTechniqueDeLaConsultation"/>
+					</insert>
+				</extend>
+				
+				<extend target="//field[@name='discountTypeSelect']">
+					<insert position="after">
+						<field name="listeDesOptions" canNew="true" widget="tag-select"/>
+					</insert>
+				</extend>
+				
+				<extend target="//panel[@name='descriptionPanel']">
+					<insert position="after">
+						<field name="descriptifTechniqueDeLaConsultation" widget="html" colSpan="12"/>
+					</insert>
+				</extend>
+				
+				<extend target="//field[@name='descriptifTechniqueDeLaConsultation']">
+					<insert position="before">
+						<panel-related field="listeDesQuantites" form-view="koryo-supplier-qtity-form" grid-view="koryo-supplier-qtity-grid" colSpan="12"/>
+					</insert>
+				</extend>
+				
+				<extend target="//panel[@name='informationsPanel']">
+					<insert position="before">
+						<panel title="Achats" colSpan="12">
+							<field name="fournisseurSelectionne"/>
+							<field name="supplierOption1" canNew="true" form-view="koryo-supplier-option-form" grid-view="koryo-supplier-option-grid"/>
+							<field name="supplierOption2" canNew="true" form-view="koryo-supplier-option-form" grid-view="koryo-supplier-option-grid"/>
+							<field name="qteaAcheter"/>
+							<field name="sousTotaldAchatHT"/>
+							<field name="prixUnitairedAchat"/>
+							<panel-related field="consultationsFournisseursList" name="consultationsFournisseursListPanel" title="Consultations fournisseurs" form-view="koryo-supplier-consulation-form" grid-view="koryo-supplier-consulation-grid" colSpan="12"/>
+						</panel>
+					</insert>	
+					<attribute name="title" value="Vente"/>		
+				</extend>
+				
+				<extend target="//panel[@name='descriptionPanel']">
+					<insert position="after">
+						<field name="cacherLignealImpression" help="Permet de savoir si on imprime la ligne de devis ou pas, cela va évidemment impacter les totaux du devis"/>
+					</insert>
+				</extend>
+				
+				<extend target="panel[@name='productPanel']/field[@name='typeSelect']">
+					<insert position="after">
+						<field name="cacherSousTotaux" showIf="typeSelect == 1"/>
+					</insert>
+				</extend>
+				
+				<extend target="//field[@name='exTaxTotal']">
+					<attribute name="readonly" value="false"/>
+				</extend>
+				
+				<extend target="//field[@name='subTotalGrossMargin']">
+					<attribute name="readonly" value="false"/>
+				</extend>
+				
+				<extend target="//field[@name='subTotalMarkup']">
+					<attribute name="readonly" value="false"/>
+				</extend>
+				
+				<extend target="//field[@name='subTotalCostPrice']">
+					<attribute name="hidden" value="true"/>
+				</extend>
+				
+				<extend target="//field[@name='subMarginRate']">
+					<attribute name="hidden" value="true"/>
+				</extend>
+				
+				<extend target="//field[@name='$companyCurrency']">
+					<attribute name="hidden" value="true"/>
+				</extend>
+				
+				<extend target="//field[@name='descriptifTechniqueDeLaConsultation']">
+					<insert position="after">
+						<button name="envyerLesConsultationsBtn" title="Envyer les consultations"/>
+					</insert>
+				</extend>
+				
+		</form>		  
+		
+		<action-attrs name="action-koryo-sale-order-line-attrs-set-descriptifTechniqueDeLaConsultation">
+			<attribute name="value" for="descriptifTechniqueDeLaConsultation" expr="eval: modeleDeDescriptifDeConsultation?.message"/>
+		</action-attrs>
+
+</object-views>
